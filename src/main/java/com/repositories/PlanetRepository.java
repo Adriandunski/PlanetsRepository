@@ -2,8 +2,10 @@ package com.repositories;
 
 import com.models.Planet;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +19,9 @@ public interface PlanetRepository extends JpaRepository<Planet, Long> {
 
     @Query("select p from Planet p where p.planetName like %?1% or p.planetInfo like %?1% or p.planetType like %?1%") //JPQL
     List<Planet> findPlanetByParam(String param);
+
+    @Transactional //spring
+    @Modifying
+    @Query("delete from Planet p where p.planetName = ?1")
+    int deletePlanetByName(String planetName);
 }
