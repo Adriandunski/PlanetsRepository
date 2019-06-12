@@ -37,16 +37,16 @@ public class PlanetController {
     }
 
     @GetMapping("planets")
-    public List<Planet> getPlanets(@RequestParam(value = "param", required = false) String planetName) {
-        if(StringUtils.isEmpty(planetName)) {
-            return planetService.getPlanets();
+    public List<Planet> getPlanets(@RequestParam(value = "param", required = false) String param) {
+        if(param != null) {
+            return planetService.getPlanets(param);
         } else {
-            return planetService.getPlanets(planetName);
+            return planetService.getPlanets();
         }
     }
 
     @PostMapping("/planet")
-    public ResponseEntity<Planet> addPlanet(@RequestBody Planet planet) {
+    public ResponseEntity<Planet> addPlanet(@RequestBody Planet planet) { //Przez JSON spodziewa sie jakiego ciala
         return ResponseEntity.ok()
                 .header("example_header", "example_header_1")
                 .body(planetService.savePlanet(planet));
@@ -65,7 +65,7 @@ public class PlanetController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("planet")
+    @DeleteMapping("/planet")
     public ResponseEntity<?> deletePlanetByName(@RequestParam(value = "name") String planetName) {
 
         if (planetService.deletePlanetByName(planetName)) {
