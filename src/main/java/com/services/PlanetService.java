@@ -17,15 +17,7 @@ public class PlanetService {
     }
 
     public Planet getPlanetByName(String planetName) {
-        Optional<Planet> result = planetRepository.findPlanetByPlanetName(planetName);
-        if (result.isPresent()) {
-            return planetRepository.findPlanetByPlanetName(planetName).get();
-        }
-        return null;
-    }
-
-    public Optional<Planet> getOptionalPlanetByName(String planetName) {
-        return Optional.of(planetRepository.findPlanetByPlanetName(planetName)).orElse(Optional.empty());
+        return Optional.ofNullable(planetRepository.findPlanetByPlanetName(planetName)).orElse(null);
     }
 
     public List<Planet> getPlanets() {
@@ -41,20 +33,11 @@ public class PlanetService {
     }
 
     public Planet updatePlanet(String planetName, Planet planet) {
-        Optional<Planet> result = planetRepository.findPlanetByPlanetName(planetName);
 
-        if (result.isPresent()) {
-            result.get().setPlanetName(planet.getPlanetName());
-            result.get().setDistanceFromSun(planet.getDistanceFromSun());
-            result.get().setLengthOfYear(planet.getLengthOfYear());
-            result.get().setOneWayLightTimeToTheSun(planet.getOneWayLightTimeToTheSun());
-            result.get().setPlanetInfo(planet.getPlanetInfo());
-            result.get().setPlanetType(planet.getPlanetType());
-            result.get().setPlanetImage(planet.getPlanetImage());
-
-            return planetRepository.save(result.get());
-        }
-        return null;
+        return Optional
+                .ofNullable(planetRepository.findPlanetByPlanetName(planetName))
+                .map(p -> updatePlanetResult(planet))
+                .orElse(null);
     }
 
     public boolean deletePlanetByName(String planetName) {
@@ -63,5 +46,21 @@ public class PlanetService {
             return true;
         }
        return false;
+    }
+
+    // ------- Helpers -------
+
+    private Planet updatePlanetResult(Planet p) {
+        return Planet
+                .builder()
+                .id(p.getId())
+                .planetName(p.getPlanetName())
+                .planetType(p.getPlanetType())
+                .planetInfo(p.getPlanetInfo())
+                .planetImage(p.getPlanetImage())
+                .oneWayLightTimeToTheSun(p.getOneWayLightTimeToTheSun())
+                .lengthOfYear(p.getLengthOfYear())
+                .distanceFromSun(p.getDistanceFromSun())
+                .build();
     }
 }

@@ -31,11 +31,6 @@ public class PlanetController {
         }
     }
 
-    @GetMapping("/planet/optional")
-    public ResponseEntity<Optional<Planet>> getPlanetByNameOptional(@RequestParam(value = "name") String planetName) {
-        return new ResponseEntity<>(planetService.getOptionalPlanetByName(planetName), HttpStatus.OK);
-    }
-
     @GetMapping("planets")
     public List<Planet> getPlanets(@RequestParam(value = "param", required = false) String param) {
         if(param != null) {
