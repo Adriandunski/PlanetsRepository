@@ -3,6 +3,8 @@ package com.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class Planet {
     @Column(name = "distance_from_sun")
     private long distanceFromSun;
 
-    @Column(name = "one_way_light_time_to_sun")
+    @Column(name = "one_way_light_time_to_the_sun")
     private double oneWayLightTimeToTheSun;
 
     @Column(name = "length_of_year")
@@ -37,4 +39,9 @@ public class Planet {
 
     @Column(name = "planet_image")
     private String planetImage;
+
+    @ManyToMany(cascade = {
+            CascadeType.ALL})
+    @JoinTable(name = "planets_tags", joinColumns = @JoinColumn(name = "planet_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
 }
