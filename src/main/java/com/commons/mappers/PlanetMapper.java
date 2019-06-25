@@ -35,7 +35,16 @@ public class PlanetMapper implements Mapper<Planet, PlanetDto>{
 
     @Override
     public Planet reverseMap(PlanetDto to) {
-        return null;
+        return Planet
+                .builder()
+                .planetName(to.getPlanetName())
+                .distanceFromSun(to.getDistanceFromSun())
+                .lengthOfYear(to.getLengthOfYear())
+                .oneWayLightTimeToTheSun(to.getOneWayLightTimeToTheSun())
+                .planetInfo(to.getPlanetInfo())
+                .planetType(to.getPlanetType())
+                .planetImage(to.getPlanetImage())
+                .build();
     }
 
     private enum TagsToStringList implements Function<Tag, String> {
