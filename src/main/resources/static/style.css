@@ -4,8 +4,9 @@ body, html {
     background-size: cover;
     background-repeat: no-repeat;
     width: auto;
-    height: auto;
+    height: 100%;
     margin: 0;
+    color: white;
 }
 
 .content {

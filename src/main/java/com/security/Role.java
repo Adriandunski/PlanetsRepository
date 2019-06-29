@@ -1,14 +1,18 @@
 package com.security;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+//@Data - powoduje problemy z implementacja hashcode
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "role")
@@ -23,4 +27,5 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<UserApp> users = new HashSet<>();
+
 }

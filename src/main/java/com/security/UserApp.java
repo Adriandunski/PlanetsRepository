@@ -16,12 +16,11 @@ public class UserApp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String userName;
+    private String username;
     private String password;
     private int active;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns =
             @JoinColumn(name = "user_id"),
@@ -30,8 +29,8 @@ public class UserApp {
     private Set<Role> roles = new HashSet<>();
 
     public UserApp(UserApp userApp) {
-        this.userName = userApp.getUserName();
-        this.password = userApp.getUserName();
+        this.username = userApp.getUsername();
+        this.password = userApp.getPassword();
         this.active = userApp.getActive();
         this.roles = userApp.getRoles();
     }

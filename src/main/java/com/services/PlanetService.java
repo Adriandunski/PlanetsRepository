@@ -36,6 +36,13 @@ public class PlanetService {
                 .collect(Collectors.toList());
     }
 
+    public List<PlanetDto> getPlanetsDto(String param) {
+        return planetRepository.findPlanetByParam(param)
+                .stream()
+                .map(planetMapper::map)
+                .collect(Collectors.toList());
+    }
+
     public List<Planet> getPlanets(String param) {
         return planetRepository.findPlanetByParam(param);
     }

@@ -19,6 +19,6 @@ public class CustomUserService implements UserDetailsService {
         return userAppRepository
                 .findUserAppByName(username)
                 .map(CustomUserDetails::new)
-                .orElseThrow( () -> new UsernameNotFoundException("User not found"));
+                .orElseThrow( () -> new UsernameNotFoundException("User not find!"));
     }
 }

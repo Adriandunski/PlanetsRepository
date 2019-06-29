@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class CustomUserDetails extends UserApp implements UserDetails {
 
+
     public CustomUserDetails(UserApp userApp) {
         super(userApp);
     }
@@ -27,13 +28,8 @@ public class CustomUserDetails extends UserApp implements UserDetails {
     }
 
     @Override
-    public String getUserName() {
-        return super.getUserName();
-    }
-
-    @Override
     public String getUsername() {
-        return null;
+        return super.getUsername();
     }
 
     @Override

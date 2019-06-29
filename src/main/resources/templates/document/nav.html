@@ -1,0 +1,20 @@
+<nav th:fragment="nav_section" class="navbar navbar-expand flex-column flex-md-row bd-navbar" xmlns:th="http://www.thymeleaf.org">
+    <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="swagger-ui.html" style="color: white">Swagger</a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0" style="color: white">
+            <li class="nav-item active">
+                <a class="nav-link" href="/" style="color: white"> Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login" style="color: white">Log In</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/signin" style="color: white">Sing In</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" th:action="@{jak stworzyc URI}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="param">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>

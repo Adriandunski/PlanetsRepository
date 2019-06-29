@@ -1,5 +1,6 @@
 package com.security;
 
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,29 +28,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                /** włączenie autoryzacji zapytan  http */
+                // włączenie autoryzacji zapytań http
                 .authorizeRequests()
+                //linki ktore biora udział w autoryzacji
                 .antMatchers("/login**")
+                //zezwol na dostep bez autoryzacji na powyzsze linki
                 .permitAll()
+                //spojnik pozwalajacy wrocic do konfiguracji obiektu http
                 .and()
+
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/signin") /** formularz - atrybut w <form action="/signin"></form> */
+                // włączenie opcji mapowania logowania strona html
+                .loginPage("/login") //na @GetMapping w LoginController
+                //konfiguracja linku pod ktorym aplikacja bedzie odbierac dane logowania
+                /** formularz - atrybut w <form action="/signin">*/
+                .loginProcessingUrl("/signin")
+                // w stronie html pod  /login
                 .usernameParameter("username")
-                .passwordParameter("userpassword")
+                // parametry formularza
+                .passwordParameter("password")
                 .successHandler((req, res, auth) -> {
+                    //obsługa przypadku poprawnego zalogowania
                     for (GrantedAuthority authority : auth.getAuthorities()) {
                         System.out.println(authority.getAuthority());
                     }
                     System.out.println(auth.getName());
-                    res.sendRedirect("/"); // home page url
+                    res.sendRedirect("/"); //home page url
                 })
                 .failureHandler((req, res, exp) -> {
+                    //obsluga przypadku blednego logowania
                     String errorMessage;
                     if (exp.getClass().isAssignableFrom(BadCredentialsException.class)) {
                         errorMessage = "Invalid username or password";
                     } else {
-                        errorMessage = "Unknown error: " + exp.getMessage();
+                        errorMessage = "unknown error: " + exp.getMessage();
                     }
 
                     req.getSession().setAttribute("message", errorMessage);
@@ -57,24 +69,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .permitAll()
                 .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessHandler((req, res, auth) -> {
-                    res.sendRedirect("/");
 
+                .logout()
+                //włączenie opcji wylogowania
+                //link do wylogowania sie
+                .logoutUrl("/logout")
+                //obsluga skutecznego wylogowania
+                .logoutSuccessHandler((req, res, auth) -> {
+                    res.sendRedirect("/login");
                 })
                 .permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/login")
+
+                // obsluga innych bledow zachowa przy probie logowania
+                .exceptionHandling()
+                // przechwycenie bledu 403 czyli niedostateczne uprawnienia uzytkownika
+                .accessDeniedPage("/login")
                 .and()
+
+                // obsluga m in atakow ddos
                 .csrf().disable()
+
+                //obsluga filtrowania i akceptacji naglowkow html
                 .cors().disable();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        auth.userDetailsService(customUserService)
+        auth
+                .userDetailsService(customUserService)
                 .passwordEncoder(passwordEncoder);
     }
 }
+
