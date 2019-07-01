@@ -1,14 +1,25 @@
 package com.controllers;
 
+import com.commons.extras.CreatorXLS;
+import com.commons.extras.DirectoryCreator;
 import com.models.Planet;
 import com.models.PlanetDto;
 import com.services.PlanetService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1")
 public class PlanetController {
@@ -17,6 +28,7 @@ public class PlanetController {
 
     public PlanetController(PlanetService planetService) {
         this.planetService = planetService;
+        DirectoryCreator.creatDirectory();
     }
 
     @GetMapping("/planet")
@@ -37,6 +49,12 @@ public class PlanetController {
         } else {
             return planetService.getPlanets();
         }
+    }
+
+    /** Generowanie pliku XLS*/
+    @GetMapping("planets/file")
+    public void getPlanetsInFile(@RequestParam String filename) throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        planetService.getFile(filename);
     }
 
     @GetMapping("planets/dto")
@@ -71,5 +89,16 @@ public class PlanetController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/planet/download/file/xls/{filename}")
+    public ResponseEntity<Resource> downloadXls(@PathVariable String filename) throws IOException {
+        Resource resource = new UrlResource(Paths.get("C:\\files\\" + filename).toUri());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/excel"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFile().getName() + "\"")
+                .contentLength(resource.getFile().length())
+                .body(resource);
     }
 }

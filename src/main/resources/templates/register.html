@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="pl" th:replace="document/head :: head_section" >
+
+</head>
+<body>
+    <nav th:replace="document/nav :: nav_section"></nav>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-8">
+                <h4>Rejestracja</h4>
+                <form th:action="@{/signup}" th:object="${loginUser}" method="post">
+                    <div class="form-row">
+                        <div class="col-md-5 col-sm-12 mb-3 form-group">
+                            <label for="firstName">Imię</label>
+                            <input type="text" id="firstName" class="form-control">
+                        </div>
+                        <div class="col-md-5 col-sm-12 mb-3 form-group">
+                            <label for="lastName">Nazwisko</label>
+                            <input type="text" id="lastName" class="form-control">
+                        </div>
+                        <div class="col-md-2 col-sm-12 mb-3">
+                            <label for="plec">Stan</label>
+                            <select class="custom-select d-block w-100" id="plec">
+                                <option value="">Wybierz...</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-6 col-sm-12 mb-3 form-group">
+                            <label for="username">Nazwa użytkownika</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">@</span>
+                                </div>
+                                <input type="text" id="username" name="username" placeholder="Username" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 mb-3 form-group">
+                            <label for="password">Hasło</label>
+                            <input type="password" id="password" name="password" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email">E-mail <span class="text-muted">(wymagane)</span></label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-9 col-sm-12 mb-3 form-group">
+                            <label for="street">Ulica</label>
+                            <input type="text" id="street" class="form-control">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Kod Pocztowy</label>
+                            <input type="text" class="form-control" id="zip">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Zarejestruj się</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

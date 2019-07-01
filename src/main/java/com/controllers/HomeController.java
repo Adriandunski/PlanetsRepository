@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 @Controller
 public class HomeController {
 
@@ -48,5 +51,11 @@ public class HomeController {
     @GetMapping("/add-page")
     public String addPage(Model model) {
         return "addPlanet";
+    }
+
+    @GetMapping("/file/xls")
+    public String getFileXls() throws NoSuchMethodException, IOException, IllegalAccessException, InvocationTargetException {
+        planetService.getFile("planets");
+        return "redirect:/";
     }
 }

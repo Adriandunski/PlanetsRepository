@@ -1,11 +1,14 @@
 package com.services;
 
+import com.commons.extras.CreatorXLS;
 import com.commons.mappers.PlanetMapper;
 import com.models.Planet;
 import com.models.PlanetDto;
 import com.repositories.PlanetRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -110,5 +113,10 @@ public class PlanetService {
                 .lengthOfYear(p.getLengthOfYear())
                 .distanceFromSun(p.getDistanceFromSun())
                 .build();
+    }
+
+    public void getFile(String filename) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, IOException {
+        CreatorXLS<Planet> planetFile = new CreatorXLS<>(Planet.class);
+        planetFile.creatFile(filename, getPlanets());
     }
 }
